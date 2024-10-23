@@ -1,5 +1,5 @@
 Select GenericName, Store, UnitPrice
 from Food_demo.Item_prices
-where GenericCategory = "Beef"
+where GenericCategory = "Chicken"
 Order by UnitPrice DESC
 ;
