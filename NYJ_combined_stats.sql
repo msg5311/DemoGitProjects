@@ -51,5 +51,22 @@ set pos = right(name,2)
 -- Delete total rows:
 delete from a_allstats where name = 'Total';
 
+-- create table:
+create table fantasy_points_rules (
+category char(50),
+point_value decimal(10,2)
+);
 
+-- insert values into fantasy table:
+insert into fantasy_points_rules (category,point_value)
+values
+('rec_yds', 0.1),
+('rush_yds', 0.1),
+('pass_yds',0.04),
+('rec_td',6),
+('rush_td',6),
+('pass_td',4),
+('rec_count',0.5);
+
+select * from fantasy_points_rules;
 
