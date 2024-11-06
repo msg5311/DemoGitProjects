@@ -36,3 +36,16 @@ from (
 ) as row_table -- Creating subquery
 where row_num < 3
 ;
+
+-- rank function needs an order by... can have duplicate ranks but will skip the next, dense rank does not skip next. 
+select *,
+rank() over (partition by department order by salary desc),
+dense_rank() over (partition by department order by salary desc)
+from h_employees;
+
+select *
+from(
+	select *,dense_rank() over (partition by department order by salary desc) as rank_row
+	from h_employees
+) as ranked
+where rank_row < 3;
