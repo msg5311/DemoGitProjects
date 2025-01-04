@@ -36,7 +36,7 @@ rank () over ( partition by genre_1
 order by totalratings desc
 ) as Rank_no
 from "Helios_project".goodreads_top100k
-where genre_1 like 'Fantasy%'
+where genre_1 like 'Romance%'
 order by Rank_no asc
 ;
 
@@ -50,19 +50,60 @@ from (
 	) where Rank_Nummy <= 10
 	order by genre_1 asc;
 
-
-
--- Sort authors descending by total ratings
-select author, sum(totalratings) as tot_ratings, count(title) as books
+-- Group by genre to see what is most popular
+select genre_1, sum(totalratings) as sum_ratings, avg(rating) as avg_rating
 from "Helios_project".goodreads_top100k
-group by author
-
-order by tot_ratings desc
-;
-
+group by genre_1
+order by sum_ratings desc
+limit 15;
 
 
--- Trim the genre column to only the top 4 categories
-select title, genre, split_part(genre, ',',1) || ', ' || split_part(genre, ',',2) || ', ' || split_part(genre, ',',3) || ', ' || split_part(genre, ',',4) as fourth
+
+-- Create new table based on narrowed search:
+create table "Helios_project".narrow_search
+as
+
+
+-- CTE to filter down the top genres
+with top_genre_cte as (
+select genre_1, sum(totalratings) as sum_ratings, avg(rating) as avg_rating
 from "Helios_project".goodreads_top100k
+group by genre_1
+order by sum_ratings desc
+limit 15
+),
+-- CTE to rank the main table in genre:
+total_list_cte as (
+select title, genre_1, rank() over (partition by goodreads_top100k.genre_1 order by totalratings desc) as genre_rank
+from "Helios_project".goodreads_top100k
+order by totalratings desc
+)
+
+-- create table of only the top 15 genres, and the top 50 books of each genre:
+select goodreads_top100k.title, goodreads_top100k.genre_1, totalratings, rating, reviews, genre_rank
+from "Helios_project".goodreads_top100k
+inner join top_genre_cte
+on "Helios_project".goodreads_top100k.genre_1 = top_genre_cte.genre_1
+
+inner join total_list_cte
+on "Helios_project".goodreads_top100k.title = total_list_cte.title
+
+where genre_rank <= 50
 order by totalratings desc;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
