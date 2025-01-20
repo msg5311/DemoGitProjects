@@ -1,16 +1,24 @@
-create table "MEP".test (id numeric, name character varying);
+create table "MEP".names_import (id numeric, name character varying);
 
-create procedure "MEP".new_sp (numeric, character varying)
+create or replace procedure "MEP".name_import_sp ()
 language 'plpgsql'
 as $$
 
 begin
 
-insert into "MEP".test (id,name) values ($1,$2);
+-- Insert the values for columns id,name,birth_year into the test table from the names_import table
+insert into "MEP".test 
+select id,name,birth_year
+from "MEP".names_import;
+
+-- next update the column age in test table with the caluclation todays year minus birth year:
+update "MEP".test 
+set age = extract('year' from current_date)-birth_year
+;
 commit;
 
 
 end;
 $$;
 
-call "MEP".new_sp(4,'Taylor');
+call "MEP".name_import_sp();
