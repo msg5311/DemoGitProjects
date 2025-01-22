@@ -1,7 +1,10 @@
+-- Outstanding items:
+-- 
+
 
 -- Code to create a blank table to receive ingredients test:
 select * into "MEP".all_ingredients_test from "MEP".all_ingredients_purchased;
-delete from "MEP".z_ingredient_import_test;
+delete from "MEP".z_all_ingredients_test;
 alter table "MEP".ingredient_import_test drop column base_unit_identifier, drop column conversion, drop column unit_price;
 
 -- Begin stored procedure:
@@ -30,12 +33,20 @@ select z_ingredient_import_test.*, b2_liquid_vol_conv.base as base_unit_identifi
 from "MEP".z_ingredient_import_test
 inner join "MEP".b2_liquid_vol_conv
 on z_ingredient_import_test.unit = b2_liquid_vol_conv.recipe
-where b2_liquid_vol_conv.base = 'fl oz')
+where b2_liquid_vol_conv.base = 'fl oz'),
+
+-- Unit and sub_unit items:
+unit_cte as (
+select *, measurement_type as base_unit_identifier, 1 as conversion, round(price/(amount),2) as unit_price
+from "MEP".z_ingredient_import_test
+where lower(measurement_type) like 'unit' or lower(measurement_type) = 'sub_unit')
 
 -- union these two together:
 select * from solid_cte
 union
-select * from liquid_cte;
+select * from liquid_cte
+union
+select * from unit_cte
 
 commit;
 
