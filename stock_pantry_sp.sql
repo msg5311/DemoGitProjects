@@ -1,5 +1,8 @@
--- Stock pantry query:
--- Accounts for items already in pantry, and adds new items.
+
+
+begin
+
+-- Adds measurement type to our shopping list:
 
 insert into "MEP".a0_pantry
 select c1.item
@@ -9,7 +12,7 @@ on c1.item = a0.item
 where a0.current_base_amt is null;
 
 with grocery_bag_cte as (
-select c1.item, c1.sold_amt, c1.sold_unit, c1.store, item_list.measurement_type
+select c1.item, c1.purchase_amt, c1.sold_unit, c1.store, item_list.measurement_type
 from "MEP".c1_grocery_list as c1
 left join (
 	select generic_item_name, measurement_type
@@ -21,7 +24,7 @@ on c1.item = item_list.generic_item_name),
 solid_cte as (
 
 -- Solid weight conv join to get base units for shopping list:
-select gbc.*,b1.base as base_unit, b1.conv as multiplier, (gbc.sold_amt * b1.conv) as base_amount
+select gbc.*,b1.base as base_unit, b1.conv as multiplier, (gbc.purchase_amt * b1.conv) as base_amount
 from grocery_bag_cte as gbc
 inner join "MEP".b1_solid_weight_conv as b1
 on gbc.sold_unit = b1.recipe
@@ -29,7 +32,7 @@ where b1.base = 'oz'),
 
 -- same for liquid items:
 liquid_cte as (
-select gbc.*,b2.base as base_unit, b2.conv as multiplier, (gbc.sold_amt * b2.conv) as base_amount
+select gbc.*,b2.base as base_unit, b2.conv as multiplier, (gbc.purchase_amt * b2.conv) as base_amount
 from grocery_bag_cte as gbc
 inner join "MEP".b2_liquid_vol_conv as b2
 on gbc.sold_unit = b2.recipe
@@ -37,7 +40,7 @@ where b2.base = 'fl oz'),
 
 -- Same for unit items:
 unit_cte as (
-select gbc.*,lower(gbc.sold_unit) as base_unit, 1 as multiplier, (gbc.sold_amt * 1) as base_amount
+select gbc.*,lower(gbc.sold_unit) as base_unit, 1 as multiplier, (gbc.purchase_amt * 1) as base_amount
 from grocery_bag_cte as gbc
 where lower(gbc.sold_unit) = 'unit' or lower(gbc.sold_unit) = 'sub_unit'),
 
@@ -47,7 +50,7 @@ union
 select item,measurement_type,base_unit,base_amount from liquid_cte
 union
 select item,measurement_type,base_unit,base_amount from unit_cte
-union
+union all
 select item,measurement_type,base_unit,current_base_amt as base_amount from "MEP".a0_pantry where measurement_type is not null
 ),
 
@@ -60,3 +63,8 @@ update "MEP".a0_pantry as a0
 set current_base_amt = uc.current_base_amt, measurement_type = uc.measurement_type, base_unit = uc.base_unit
 from update_cte as uc
 where a0.item = uc.item;
+
+
+commit;
+
+end;
