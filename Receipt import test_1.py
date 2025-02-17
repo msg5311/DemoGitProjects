@@ -14,7 +14,7 @@ import os
 import numpy as np
 import re
 
-file_tag = '20250203'
+file_tag = '20240408'
 file_path = f"/Users/mattgorka/00_Receipts/{file_tag}.tiff"
 update_tag = ''
 preprocess_path = f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff"
@@ -85,28 +85,20 @@ txt = pytesseract.image_to_string(img, config=" --psm 6")
 txt2 = txt.split('\n')                                                  ## Split all the text by the line break
 ##print(txt2)
 
-print(txt2)
+date_final = re.findall("..-..-..", txt)                                ## Search for purchase date
+date_final = date_final[0]                                              ## Convert list of results to just take item 0 of list. 
 
 list_aa = []
 for item in txt2:
     list_aa.append(item)
     #print(item)
 
-substring0 = "LE TRANSACTION"
+substring0 = "TRANSACT"
 for item in list_aa:
     if substring0 in item:
         list_aa_st_index = list_aa.index(item)
     else:
         pass
-
-substring1 = "??-??-??"
-for item in list_aa:
-    if substring1 in item:
-        list_aa_date_index = list_aa.index(item)
-        date_final = list_aa[list_aa_date_index]
-    else:
-        pass
-
 
 list_aa = list_aa[list_aa_st_index+1:]                 ## Remove the data above sale transaction line
 
@@ -170,4 +162,4 @@ for item, price, in zip(items, prices):                                 ## Itter
 file.close()                                                            ## 
 
 
-print(f"Receipt upload complete. Here is a summary: \n {trans_final} \n {list_aa_total}")
+print(f"Receipt upload complete. Here is a summary: \n {trans_final} \n {list_aa_total} \n Purchase date:{date_final}")
