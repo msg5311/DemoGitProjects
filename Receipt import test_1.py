@@ -11,17 +11,80 @@ import cv2
 import csv
 import pandas as pd
 import os
+import numpy as np
+import re
 
-img = cv2.imread('/Users/mattgorka/00_Receipts/20230605.tiff')
-filename = os.path.basename('/Users/mattgorka/00_Receipts/20230605.tiff')
+file_tag = '20250203'
+file_path = f"/Users/mattgorka/00_Receipts/{file_tag}.tiff"
+update_tag = ''
+preprocess_path = f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff"
 
-##img = cv2.resize(img, None, fx=2, fy=2)
+img = cv2.imread(file_path)
+filename = os.path.basename(f"/Users/mattgorka/00_Receipts/{file_tag}.tiff")
 
-img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-##config = '--oem 3 --psm %d'
 
+## invert image:
+inverted_image = cv2.bitwise_not(img)
+update_tag = 'invert'
+cv2.imwrite(f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff", inverted_image)
+
+## Binarization:
+def grayscale(gs_image):
+    return (cv2.cvtColor(img, cv2.COLOR_BGR2GRAY))
+
+gray_image = grayscale(img)
+update_tag = 'gray'
+cv2.imwrite(f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff",gray_image)
+
+thresh, im_bw = cv2.threshold(gray_image, 127, 255, cv2.THRESH_BINARY)                          ## Massively impacted by glare of the picture. Suggestion of 200 and 230 is worse. 
+update_tag = 'bw'
+cv2.imwrite(f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff", im_bw)
+
+## Noise removal:   This is completely optional based on the results. 
+def noise_removal(nr_image):
+    kernel = np.ones((1,1), np.uint8)
+    nr_image - cv2.dilate(nr_image, kernel, iterations=1)
+    kernel = np.ones((1,1), np.uint8)
+    nr_image = cv2.erode(nr_image, kernel, iterations=1)
+    nr_image = cv2.morphologyEx(nr_image, cv2.MORPH_CLOSE, kernel)
+    nr_image = cv2.medianBlur(nr_image, 3)
+    return (nr_image)
+
+no_noise = noise_removal(im_bw)
+cv2.imwrite(f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff",no_noise)
+
+## Erosion:
+def thin_font(tf_image):
+    tf_image = cv2.bitwise_not(tf_image)
+    kernel = np.ones((2,2), np.uint8)
+    tf_image = cv2.erode(tf_image, kernel, iterations=1)
+    tf_image = cv2.bitwise_not(tf_image)
+    return(tf_image)
+
+eroded_image = thin_font(no_noise)
+update_tag = 'thinfont'
+cv2.imwrite(f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff", eroded_image)
+
+## Dilation:
+def thick_font(tf_image):
+    tf_image = cv2.bitwise_not(tf_image)
+    kernel = np.ones((2,2), np.uint8)
+    tf_image = cv2.dilate(tf_image, kernel, iterations=1)
+    tf_image = cv2.bitwise_not(tf_image)
+    return(tf_image)
+
+dilated_image = thick_font(no_noise)
+update_tag = 'thickfont'
+cv2.imwrite(f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff", dilated_image)
+
+update_tag = 'thickfont'
+img = cv2.imread(f"/Users/mattgorka/00_Receipts/pre_process/{update_tag}{file_tag}.tiff")                                       ## Update filename to whatever the last step is here.
+
+## Rest of script:
 txt = pytesseract.image_to_string(img, config=" --psm 6")
 txt2 = txt.split('\n')                                                  ## Split all the text by the line break
+##print(txt2)
+
 print(txt2)
 
 list_aa = []
@@ -90,9 +153,9 @@ for val in range(n):
 
     list_aaa.append(a)                                                  ## Appends 
 
-file = open("reciept_export.csv","a")                                   ## Creates a file receipt_export to receive the itemized list
+file = open("reciept_export2.csv","a")                                   ## Creates a file receipt_export to receive the itemized list
 rowcount = 0                                                            ## Initialize counter to zero
-for row in open("reciept_export.csv"):                                  ## Itterate through all rows in csv
+for row in open("reciept_export2.csv"):                                  ## Itterate through all rows in csv
     rowcount = rowcount + 1                                             ## Increase counter by one each time
 writer = csv.writer(file)                                               ##
 
