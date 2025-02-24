@@ -20,7 +20,9 @@ st.subheader("Smarter. Quicker. Cheaper.")                                      
 list = ['Josh', 'Emily', 'Matt', 'Anthony', 'Ruthie']                                           ## List of names
 age = [29, 28, 30, 38, 5]                                                                       ## List of ages
 
-df = pd.DataFrame(ref_list, columns = ['item','price','store'])                                                     ## Create dataframe joining those lists
+df = pd.DataFrame(ref_list, columns = ['item','price','store'])                                 ## Create dataframe joining those lists
+df_2 = df.pivot_table(index='item',columns='store',values='price', aggfunc='mean')
+print(df_2)
 ##ref_list_piv = df.pivot(index='item',columns='store',values='price')                          ## This is what we use to pivot the table
 ##print(ref_list_piv)
 
@@ -37,12 +39,14 @@ if item in items_list:                                                          
     st.session_state.f_list.append(item)                                                        ## If yes append item to session state variable list and return message.
     st.success(f"'{item}' added to the list!")  
 else:
-    st.error(f"Sorry, we have no pricing information on that '{item}'. Please check back soon!")     ## If not, return error.
+    st.error(f"Sorry, we have no pricing information for '{item}'. Please check back tomorrow!")     ## If not, return error.
 
 
 
-df_f = df[df['item'].isin(st.session_state.f_list)]                                             ## Our new dataframe only shows the rows that correspond to the items that the user input. 
+df_2.reset_index(inplace = True)                                                                ## Resetting index away from 'store'.
+df_f = df_2[df_2['item'].isin(st.session_state.f_list)]                                          ## Our new dataframe only shows the rows that correspond to the items that the user input. 
 print(df_f)
+
 
 st.dataframe(df_f)                                                                              ## Show items in table below.
 
