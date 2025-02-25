@@ -4,6 +4,8 @@ import pandas as pd
 import test_sql_connect                                                                         ## Connects to script pulling in SQL results
 ref_list = test_sql_connect.results                                                             ## Organizes sql results in list.
 
+
+
 items_list = []
 
 for item in ref_list:
@@ -15,6 +17,11 @@ for item in ref_list:
 
 st.header('Welcome to MEP!', divider='rainbow')                                                 ## Create header
 st.subheader("Smarter. Quicker. Cheaper.")                                                      ## Create subheader
+
+col1, col2 = st.columns([1,1])
+
+col1.subheader("New ingredients being added every day!")
+col2.metric(label = "New ingredients added today", value="14", delta="6")
 
 ## List of possible names
 list = ['Josh', 'Emily', 'Matt', 'Anthony', 'Ruthie']                                           ## List of names
@@ -44,7 +51,8 @@ else:
 
 
 df_2.reset_index(inplace = True)                                                                ## Resetting index away from 'store'.
-df_f = df_2[df_2['item'].isin(st.session_state.f_list)]                                          ## Our new dataframe only shows the rows that correspond to the items that the user input. 
+df_2 = df_2.loc[:, ['item','Giant', 'TJs', 'Whole foods', 'Costco', 'Safeway', 'Amazon', 'Binnys', 'Total Wine']]    
+df_f = df_2[df_2['item'].isin(st.session_state.f_list)]                                    ## Our new dataframe only shows the rows that correspond to the items that the user input. 
 print(df_f)
 
 
