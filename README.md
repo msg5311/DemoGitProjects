@@ -29,7 +29,9 @@ I am always working on projects in my free time and do my best to keep this TOC 
 [SQL code](https://github.com/msg5311/DemoGitProjects/blob/main/NYJ/NYJ_combined_stats.sql)
 
 **Premise:** This was my first project in SQL and meant to create a dataset from scratch, build tables, and perform light transformations. Data for this project was sourced from ESPN.
+
 **Skills:** Creating tables, altering tables, inserting data, creating columns with default values, updating values based on critera and formulas, joins.
+
 **Technology:** SQL
 
 
