@@ -21,26 +21,16 @@ conn = psycopg2.connect(
 
 cur = conn.cursor()
 
-
+## Insert statement to grab ingredients that are entered by a user, and then appended to the all ingredients table of the SQL database:
 try:
     sql = '''INSERT INTO "MEP".a1_all_ingredients_purchased (generic_item_name, measurement_type, amount, unit, price, store) VALUES (%s, %s, %s, %s, %s, %s)'''
-    sample = ('Apples', 'Unit', 6, 'Unit', 3.99, 'Shop Rite')
-    cur.execute(sql, sample)
+    sample = [('Pears', 'Unit', 6, 'Unit', 3.99, 'Shop Rite'), ('Apples', 'Unit', 6, 'Unit', 3.99, 'Shop Rite')]
+    for row in sample:
+        cur.execute(sql, row)
     conn.commit()
 except psycopg2.Error as e:
     conn.rollback()
     print(f"Error inserting data: {e}")
-##results = cur.fetchall()
-
-##for row in results:
-##    print(row)
-
-##df = pd.DataFrame(results)
-##df.columns = ['item','price','store']
-
-##df = df.groupby(['item','store'])['price'].mean()
-
-##print(df)
 
 
 
