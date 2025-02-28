@@ -18,41 +18,41 @@ I am always working on projects in my free time and do my best to keep this TOC 
 
 [Webscrape example](https://github.com/msg5311/DemoGitProjects/blob/main/README.md#ingredient-import)
 
-#### The Dinner Party:
+#### <ins>The Dinner Party</ins>:
 
 [SQL code](https://github.com/msg5311/DemoGitProjects/blob/main/Dinner%20Party/GoodreadsUpload.sql)
 
-**Premise:** Use data analytics to determine which books to read in order to maximize conversations at a dinner party. The dataset utiized was sourced from Goodreads and represented the most read and rated books published since 1980. SQL was used for the majority of the data cleaning and transformations. Once the data was fitlered down, and in a usable format, I was able to export and build a dashboard in Tableau and solve the objective function, within the constraints. 
+- **Premise:** Use data analytics to determine which books to read in order to maximize conversations at a dinner party. The dataset utiized was sourced from Goodreads and represented the most read and rated books published since 1980. SQL was used for the majority of the data cleaning and transformations. Once the data was fitlered down, and in a usable format, I was able to export and build a dashboard in Tableau and solve the objective function, within the constraints. 
 
-**Skills:** split_part, ranking, inner join
+- **Skills:** split_part, ranking, inner join
 
-**Technology:** Tableau, SQL
+- **Technology:** Tableau, SQL
 
 #### Ingredient import:
 
 [SQL code](https://github.com/msg5311/DemoGitProjects/blob/main/MEP/ingredient_import_sp.sql)
 
-**Premise:** As part of an extensive personal project to create a cooking database, this project focuses on automating the upload of new ingredients to the database.
+- **Premise:** As part of an extensive personal project to create a cooking database, this project focuses on automating the upload of new ingredients to the database.
 
 #### <ins>Fantasy Football Statistics</ins>:
 
 [SQL code](https://github.com/msg5311/DemoGitProjects/blob/main/NYJ/NYJ_combined_stats.sql)
 
-**Premise:** This was my first project in SQL and meant to create a dataset from scratch, build tables, and perform light transformations. Data for this project was sourced from ESPN.
+- **Premise:** This was my first project in SQL and meant to create a dataset from scratch, build tables, and perform light transformations. Data for this project was sourced from ESPN.
 
-**Skills:** Creating tables, altering tables, inserting data, creating columns with default values, updating values based on critera and formulas, joins.
+- **Skills:** Creating tables, altering tables, inserting data, creating columns with default values, updating values based on critera and formulas, joins.
 
-**Technology:** SQL
+- **Technology:** SQL
 
-#### Webscraping example:
+#### <ins> Webscraping example</ins>:
 
 [Python code](https://github.com/msg5311/DemoGitProjects/blob/main/ws3_tabledata.py)
 
-**Premise:** This short project was to practice webscraping using the BeautifulSoup library. Using a for loop, this script loops through 30 pages of table data and extracts the teams and their respective records by year, then writes it to a CSV file. 
+- **Premise:** This short project was to practice webscraping using the BeautifulSoup library. Using a for loop, this script loops through 30 pages of table data and extracts the teams and their respective records by year, then writes it to a CSV file. 
 
-**Skills:** BeautifulSoup, for loops, read/write to CSV
+- **Skills:** BeautifulSoup, for loops, read/write to CSV
 
-**Technology:** Python
+- **Technology:** Python
 
 
 
