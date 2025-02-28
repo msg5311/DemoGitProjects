@@ -10,13 +10,13 @@ I am always working on projects in my free time and do my best to keep this TOC 
 
 [The dinner party](https://github.com/msg5311/DemoGitProjects/edit/main/README.md#the-dinner-party)
 
-[Ingredient import]
+[Ingredient import](https://github.com/msg5311/DemoGitProjects/blob/main/README.md#ingredient-import)
 
 [Fantasy football statistics](https://github.com/msg5311/DemoGitProjects/blob/main/README.md#fantasy-football-statistics)
 
 ### Python projects:
 
-
+[Webscrape example]
 
 #### The Dinner Party:
 
