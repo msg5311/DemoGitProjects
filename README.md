@@ -12,7 +12,7 @@ I am always working on projects in my free time and do my best to keep this TOC 
 
 ### Python projects:
 
-[Fantasy football statistics](https://github.com/msg5311/DemoGitProjects/blob/main/NYJ/NYJ_combined_stats.sql)
+[Fantasy football statistics](https://github.com/msg5311/DemoGitProjects/blob/main/README.md#fantasy-football-statistics)
 
 #### The Dinner Party:
 
