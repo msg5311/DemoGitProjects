@@ -19,7 +19,9 @@ I am always working on projects in my free time and do my best to keep this TOC 
 [SQL code](https://github.com/msg5311/DemoGitProjects/blob/main/Dinner%20Party/GoodreadsUpload.sql)
 
 **Premise:** Use data analytics to determine which books to read in order to maximize conversations at a dinner party. The dataset utiized was sourced from Goodreads and represented the most read and rated books published since 1980. SQL was used for the majority of the data cleaning and transformations. Once the data was fitlered down, and in a usable format, I was able to export and build a dashboard in Tableau and solve the objective function, within the constraints. 
+
 **Skills:** split_part, ranking, inner join
+
 **Technology:** Tableau, SQL
 
 #### Fantasy Football Statistics:
