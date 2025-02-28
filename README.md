@@ -34,7 +34,7 @@ I am always working on projects in my free time and do my best to keep this TOC 
 
 **Premise:** As part of an extensive personal project to create a cooking database, this project focuses on automating the upload of new ingredients to the database.
 
-#### Fantasy Football Statistics:
+#### <ins>Fantasy Football Statistics</ins>:
 
 [SQL code](https://github.com/msg5311/DemoGitProjects/blob/main/NYJ/NYJ_combined_stats.sql)
 
