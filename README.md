@@ -10,9 +10,13 @@ I am always working on projects in my free time and do my best to keep this TOC 
 
 [The dinner party](https://github.com/msg5311/DemoGitProjects/edit/main/README.md#the-dinner-party)
 
-### Python projects:
+[Ingredient import]
 
 [Fantasy football statistics](https://github.com/msg5311/DemoGitProjects/blob/main/README.md#fantasy-football-statistics)
+
+### Python projects:
+
+
 
 #### The Dinner Party:
 
@@ -24,6 +28,12 @@ I am always working on projects in my free time and do my best to keep this TOC 
 
 **Technology:** Tableau, SQL
 
+#### Ingredient import:
+
+[SQL code](https://github.com/msg5311/DemoGitProjects/blob/main/MEP/ingredient_import_sp.sql)
+
+**Premise:** As part of an extensive personal project to create a cooking database, this project focuses on automating the upload of new ingredients to the database.
+
 #### Fantasy Football Statistics:
 
 [SQL code](https://github.com/msg5311/DemoGitProjects/blob/main/NYJ/NYJ_combined_stats.sql)
@@ -33,6 +43,18 @@ I am always working on projects in my free time and do my best to keep this TOC 
 **Skills:** Creating tables, altering tables, inserting data, creating columns with default values, updating values based on critera and formulas, joins.
 
 **Technology:** SQL
+
+#### Webscraping example:
+
+[Python code](https://github.com/msg5311/DemoGitProjects/blob/main/ws3_tabledata.py)
+
+**Premise:** This short project was to practice webscraping using the BeautifulSoup library. Using a for loop, this script loops through 30 pages of table data and extracts the teams and their respective records by year, then writes it to a CSV file. 
+
+**Skills:** BeautifulSoup, for loops, read/write to CSV
+
+**Technology:** Python
+
+
 
 
 
