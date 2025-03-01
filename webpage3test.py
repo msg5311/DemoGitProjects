@@ -59,6 +59,23 @@ print(df_f)
 st.dataframe(df_f)                                                                              ## Show items in table below.
 
 
+## This section will be meant to update data in the sql database. Have this update the ticker at the top of the page as well.
+
+if 's_list' not in st.session_state:
+    st.session_state.s_list = []
+
+new_item = st.text_input('To add an item to the database type the following: item name, amount, unit, price, store and press Enter')
+new_item_list = new_item.split(",")
+st.write(new_item_list)
+
+if len(new_item_list) == 5:
+    st.success(f"'{new_item_list[0]}' added to the list! Thank you for helping us on our mission.")
+else:
+     st.error(f"Hmmm, it looks like some of the information was missing. Please try again.")
+
+
+
 ##df2 = pd.DataFrame({'Items':st.session_state.f_list}, {'Age':st.session_state.age_list})
 ##st.dataframe(df2)
 
+print(st.session_state.s_list)
