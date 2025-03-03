@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 
+import ws4
+
 import test_sql_connect                                                                         ## Connects to script pulling in SQL results
 ref_list = test_sql_connect.results                                                             ## Organizes sql results in list.
 
@@ -41,13 +43,14 @@ if 'f_list' not in st.session_state:                                            
     st.session_state.f_list = []
 
 item = st.text_input('Search for an ingredient and press Enter')                                ## Text input for user adding inputs to session state list
-
-if item in items_list:                                                                                ## Checks to see if user entry is in the list of pre-approved items.
-    st.session_state.f_list.append(item)                                                        ## If yes append item to session state variable list and return message.
-    st.success(f"'{item}' added to the list!")  
+if item:
+    if item in items_list:                                                                                ## Checks to see if user entry is in the list of pre-approved items.
+        st.session_state.f_list.append(item)                                                        ## If yes append item to session state variable list and return message.
+        st.success(f"'{item}' added to the list!")  
+    else:
+        st.error(f"Sorry, we have no pricing information for '{item}'. Please check back tomorrow!")     ## If not, return error.
 else:
-    st.error(f"Sorry, we have no pricing information for '{item}'. Please check back tomorrow!")     ## If not, return error.
-
+    pass
 
 
 df_2.reset_index(inplace = True)                                                                ## Resetting index away from 'store'.
@@ -65,17 +68,30 @@ if 's_list' not in st.session_state:
     st.session_state.s_list = []
 
 new_item = st.text_input('To add an item to the database type the following: item name, amount, unit, price, store and press Enter')
-new_item_list = new_item.split(",")
-st.write(new_item_list)
+if new_item:
+    new_item_list = new_item.split(",")
+    st.write(new_item_list)
 
-if len(new_item_list) == 5:
-    st.success(f"'{new_item_list[0]}' added to the list! Thank you for helping us on our mission.")
+    if len(new_item_list) == 5:
+        st.success(f"'{new_item_list[0]}' added to the list! Thank you for helping us on our mission.")
+    else:
+        st.error(f"Hmmm, it looks like some of the information was missing. Please try again.")
 else:
-     st.error(f"Hmmm, it looks like some of the information was missing. Please try again.")
-
+    pass
 
 
 ##df2 = pd.DataFrame({'Items':st.session_state.f_list}, {'Age':st.session_state.age_list})
 ##st.dataframe(df2)
 
-print(st.session_state.s_list)
+if 'r_list' not in st.session_state:
+    st.session_state.r_list = []
+
+url = st.text_input('Copy and paste the link to a recipe.')
+if url:
+    a = ws4.screp(url)
+    st.dataframe(a)
+else:
+    pass
+
+##url = "https://www.saltandlavender.com/chicken-in-a-mushroom-and-marsala-sauce/"
+
