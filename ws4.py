@@ -3,40 +3,57 @@
 from bs4 import BeautifulSoup
 import requests
 import csv
+import pandas as pd
 
-headers_new = {"User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}
 
-##r = requests.get('http://google.com')
-r = requests.get('https://www.saltandlavender.com/marry-me-chicken/',headers=headers_new)
-print(r.status_code)
 
-page_to_scrape = requests.get("https://www.saltandlavender.com/marry-me-chicken/", headers=headers_new)
-soup = BeautifulSoup(page_to_scrape.text, "lxml")
+def screp(url):
 
-recipe_title = soup.find("h1", attrs={"class":"entry-title"})
-recipe_title_clean = recipe_title.get_text()
-print(recipe_title_clean)
+    headers_new = {"User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"}
 
-ingredients = soup.findAll("span", attrs={"class":"wprm-recipe-ingredient-name"})
-amounts = soup.findAll("span", attrs={"class":"wprm-recipe-ingredient-amount"})
-units = soup.findAll("span", attrs={"class":"wprm-recipe-ingredient-unit"})
-#notes = soup.findAll("span", attrs={"class":"wprm-recipe-ingredient-notes wprm-recipe-ingredient-notes-faded"})
-#for item in ingredients:
-#    print(item.get_text())
+    page_to_scrape = requests.get(url, headers=headers_new)
+    print(page_to_scrape.status_code)
+    soup = BeautifulSoup(page_to_scrape.text, "lxml")
 
-print(ingredients)
+    ##print(soup)
 
-for unit in units:
-    print(unit.text)
+    recipe_title = soup.find("h1", attrs={"class":"entry-title"})
+    recipe_title_clean = recipe_title.get_text()
+    print(recipe_title_clean)
 
-file_2 = open("scraped_countries.csv", "w")
-writer = csv.writer(file_2)
 
-writer.writerow(["Ingredient", "Amount", "Population", "Area"])
+    names = []
+    amounts = []
+    units = []
 
-n = 0
-for ingredient, amount, unit in zip(ingredients, amounts, units):
-    print(n,ingredient.text.strip() + "-" + amount.text + "-" + unit.text + "-")
-    writer.writerow([ingredient.text.strip(), amount.text, unit.text])
-    n = n + 1
-file_2.close()
+    level_0 = soup.find('div', class_="wprm-recipe-ingredient-group")
+
+    for row in level_0:
+        ing_rows = soup.findAll('li', class_="wprm-recipe-ingredient")
+        for row in ing_rows:
+            n = row.find("span", attrs={"class":"wprm-recipe-ingredient-name"})
+            a = row.find("span", attrs={"class":"wprm-recipe-ingredient-amount"})
+            u = row.find("span", attrs={"class":"wprm-recipe-ingredient-unit"})
+            
+            if n:
+                n = n.text.strip()
+            else:
+                n = ''
+            names.append(n)
+            
+            if a:
+                a = a.text.strip()
+            else:
+                a = ''
+            a = amounts.append(a)
+
+            if u:
+                u = u.text.strip()
+            else:
+                u = ''
+            u = units.append(u)
+
+    ##print(units)
+
+    df = pd.DataFrame({'ingredients': names, 'amount': amounts, 'unit': units})
+    return df
